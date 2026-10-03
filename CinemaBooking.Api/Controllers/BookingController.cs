@@ -7,29 +7,47 @@ namespace CinemaBooking.Api.Controllers;
 
 [ApiController]
 [Route("api/booking")]
-public class BookingController(ISeatManager seatManager) : ControllerBase
+public class BookingController(IBookingManager bookingManager) : ControllerBase
 {
-    [HttpPut("reserve")]
-    public async Task<ActionResult<BookingResponse>> ReserveSeats([FromBody] BookingRequest bookingRequest)
+    [HttpGet("list")]
+    public async Task<ActionResult<List<Booking>>> GetAllBookings()
     {
-        var response = await seatManager.BookingSeats(bookingRequest, CancellationToken.None);
-
-        return Ok(response);
+        var bookings = await bookingManager.GetAllBooking(CancellationToken.None);
+        return Ok(bookings);
     }
 
-    [HttpPut("reserveContiguous")]
-    public async Task<ActionResult<BookingResponse>> ReserveContiguousSeats([FromBody] ReserveContiguousSeatsRequest bookingRequest)
+    [HttpPost("create")]
+    public async Task<ActionResult<BookingResponse>> CreateBooking([FromBody] BookingRequest bookingRequest)
     {
-        var response = await seatManager.BookingContiguousSeats(bookingRequest.Count, bookingRequest.ShowTimeId, CancellationToken.None);
-
-        return Ok(response);
+        var bookingId = await bookingManager.CreateBooking(bookingRequest, CancellationToken.None);
+        return Ok(bookingId);
     }
 
-    [HttpPut("confirm")]
-    public async Task<IActionResult> ConfirmSeats([FromBody] BookingRequest bookingRequest)
+    [HttpPost("createContiguous")]
+    public async Task<ActionResult<BookingResponse>> CreateContiguousBooking([FromBody] ReserveContiguousSeatsRequest bookingRequest)
     {
-        await seatManager.ConfirmBookingSeats(bookingRequest, CancellationToken.None);
+        var bookingId = await bookingManager.CreateBookingForContiguous(bookingRequest.Count, bookingRequest.ShowTimeId, CancellationToken.None);
+        return Ok(bookingId);
+    }
 
+    [HttpPut("delete/{bookingId}")]
+    public async Task<IActionResult> DeleteBooking(Guid bookingId)
+    {
+        await bookingManager.DeleteBooking(bookingId, CancellationToken.None);
+        return NoContent();
+    }
+
+    [HttpPut("confirmBooking/{bookingId}")]
+    public async Task<IActionResult> ConfirmBooking(Guid bookingId)
+    {
+        await bookingManager.ConfirmBooking(bookingId, CancellationToken.None);
+        return NoContent();
+    }
+
+    [HttpPut("updateBooking")]
+    public async Task<IActionResult> UpdateBooking([FromBody] BookingUpdateRequest bookingUpdateRequest)
+    {
+        await bookingManager.UpdateBooking(bookingUpdateRequest, CancellationToken.None);
         return NoContent();
     }
 }

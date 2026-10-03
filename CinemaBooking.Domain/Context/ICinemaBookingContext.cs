@@ -11,5 +11,7 @@ public interface ICinemaBookingContext
 
     public DbSet<Showtime> Showtimes { get; }
 
+    public DbSet<Booking> Bookings { get; }
+
     Task SaveChanges(CancellationToken cancellationToken);
 }

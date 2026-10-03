@@ -9,9 +9,9 @@ public static class ConnectionStringToDb
 
     private static string GetConnectionString()
     {
-        var solutionDirectory = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+        var directory = Directory.GetCurrentDirectory();
 
-        var databasePath = Path.Combine(solutionDirectory, "CinemaDb.db");
+        var databasePath = Path.GetFullPath(Path.Combine(directory, "..", "CinemaBooking.DbLayer", "CinemaDb.db"));
 
         // Replace with your actual connection string
 

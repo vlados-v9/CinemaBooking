@@ -13,6 +13,8 @@ internal sealed class CinemaBookingContext : DbContext, ICinemaBookingContext
 
     public DbSet<Seat> Seats => Set<Seat>();
 
+    public DbSet<Booking> Bookings => Set<Booking>();
+
     public Task SaveChanges(CancellationToken cancellationToken) => SaveChangesAsync(cancellationToken);
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,6 +1,4 @@
-﻿using CinemaBooking.Domain.Entities;
-
-namespace CinemaBooking.Domain.Providers
+﻿namespace CinemaBooking.Domain.Providers
 {
     /// <summary>
     /// Accoring to task we don't need to manage auditorium and as the result also we don't need to manage seats.
@@ -9,12 +7,7 @@ namespace CinemaBooking.Domain.Providers
     /// </summary>
     internal interface ISeatProvider
     {
-        Task CreateSeats(long showTimeId, CancellationToken cancellationToken);
-
-        Task<BookingResponse> BookingSeats(BookingRequest bookingRequest, CancellationToken cancellationToken);
-
-        Task<BookingResponse> BookingContiguousSeats(int count, long showTimeId, CancellationToken cancellationToken);
-
-        Task ConfirmBookingSeats(BookingRequest bookingRequest, CancellationToken cancellationToken);
+        Task CreateSeats(long showTimeId, int countRow, int countSeatsPerRow, CancellationToken cancellationToken);
+        Task DeleteSeat(long seatId, CancellationToken cancellationToken);
     }
 }

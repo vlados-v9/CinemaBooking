@@ -1,5 +1,4 @@
-﻿using CinemaBooking.Domain.Entities;
-using CinemaBooking.Domain.Providers;
+﻿using CinemaBooking.Domain.Providers;
 
 namespace CinemaBooking.Domain.Manager.Implementation;
 
@@ -10,15 +9,9 @@ namespace CinemaBooking.Domain.Manager.Implementation;
 /// <param name="seatProvider"></param>
 internal sealed class SeatManager(ISeatProvider seatProvider) : ISeatManager
 {
-    public Task<BookingResponse> BookingSeats(BookingRequest bookingRequest, CancellationToken cancellationToken) =>
-        seatProvider.BookingSeats(bookingRequest, cancellationToken);
+    public Task CreateSeats(long showTimeId, int countRow, int countSeatsPerRow, CancellationToken cancellationToken) =>
+        seatProvider.CreateSeats(showTimeId, countRow, countSeatsPerRow, cancellationToken);
 
-    public Task<BookingResponse> BookingContiguousSeats(int count, long showTimeId, CancellationToken cancellationToken) =>
-        seatProvider.BookingContiguousSeats(count, showTimeId, cancellationToken);
-
-    public Task ConfirmBookingSeats(BookingRequest bookingRequest, CancellationToken cancellationToken) =>
-        seatProvider.ConfirmBookingSeats(bookingRequest, cancellationToken);
-
-    public Task CreateSeats(long showTimeId, CancellationToken cancellationToken) =>
-        seatProvider.CreateSeats(showTimeId, cancellationToken);
+    public Task DeleteSeat(long seatId, CancellationToken cancellationToken) =>
+        seatProvider.DeleteSeat(seatId, cancellationToken);
 }

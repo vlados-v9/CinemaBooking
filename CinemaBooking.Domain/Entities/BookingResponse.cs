@@ -4,8 +4,8 @@ namespace CinemaBooking.Domain.Entities;
 
 public sealed class BookingResponse
 {
-    //[JsonPropertyName("bookingId")]
-    //public long BookingId { get; set; }
+    [JsonPropertyName("bookingId")]
+    public Guid BookingId { get; set; }
 
     [JsonPropertyName("movieInfo")]
     public string MovieInfo { get; set; } = string.Empty;

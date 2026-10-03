@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using CinemaBooking.Domain.Exceptions;
+using System.Net;
 
 namespace CinemaBooking.Api.Middleware;
 
@@ -24,8 +25,13 @@ public sealed class ExceptionHandlingMiddleware(
         var (statusCode, title) = exception switch
         {
             ArgumentException => (HttpStatusCode.BadRequest, "Invalid request"),
+
             KeyNotFoundException => (HttpStatusCode.NotFound, "Resource not found"),
+            NotFoundException => (HttpStatusCode.NotFound, "Resource not found"),
+
             InvalidOperationException => (HttpStatusCode.Conflict, "Operation cannot be completed"),
+            ReservetionException => (HttpStatusCode.Conflict, "Operation cannot be completed"),
+
             _ => (HttpStatusCode.InternalServerError, "Unexpected error")
         };
 

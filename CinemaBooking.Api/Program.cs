@@ -33,4 +33,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//Use only for creating data in DB
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ICinemaBookingContext>();
+//    await DatabaseSeeder.SeedAsync(context);
+//}
+
 app.Run();

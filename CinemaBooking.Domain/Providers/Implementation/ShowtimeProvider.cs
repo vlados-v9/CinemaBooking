@@ -13,7 +13,6 @@ namespace CinemaBooking.Domain.Providers.Implementation;
 /// <param name="seatProvider"></param>
 internal class ShowtimeProvider(
     ICinemaBookingContext context,
-    ISeatProvider seatProvider,
     IValidator<Showtime> validator) : IShowtimeProvider
 {
     public async Task<long> Create(Showtime showTime, CancellationToken cancellationToken)
@@ -30,8 +29,6 @@ internal class ShowtimeProvider(
         await context.Showtimes.AddAsync(showTime, cancellationToken);
 
         await context.SaveChanges(cancellationToken);
-
-        await seatProvider.CreateSeats(showTime.Id, cancellationToken);
 
         return showTime.Id;
     }

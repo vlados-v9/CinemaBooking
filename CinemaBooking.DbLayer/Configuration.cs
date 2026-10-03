@@ -10,6 +10,7 @@ public static class Configuration
     {
         serviceColelction.AddDbContext<CinemaBookingContext>();
         serviceColelction.AddScoped<ICinemaBookingContext, CinemaBookingContext>();
+
         return serviceColelction;
     }
 }

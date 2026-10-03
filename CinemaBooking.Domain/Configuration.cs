@@ -18,9 +18,11 @@ public static class Configuration
         serviceCollection.AddScoped<IMovieProvider, MovieProvider>();
         serviceCollection.AddScoped<IMovieManager, MovieManager>();
         serviceCollection.AddScoped<ISeatProvider, SeatProvider>();
+        serviceCollection.AddScoped<IBookingProvider, BookingProvider>();
         serviceCollection.AddScoped<IShowtimeProvider, ShowtimeProvider>();
         serviceCollection.AddScoped<IShowtimeManager, ShowtimeManager>();
         serviceCollection.AddScoped<ISeatManager, SeatManager>();
+        serviceCollection.AddScoped<IBookingManager, BookingManager>();
 
         serviceCollection.AddSingleton<IContiguousSeatFinder, ContiguousSeatFinder>();
 
