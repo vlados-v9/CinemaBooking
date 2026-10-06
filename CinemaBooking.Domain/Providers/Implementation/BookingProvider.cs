@@ -17,11 +17,11 @@ internal class BookingProvider(ICinemaBookingContext context,
 
         var seats = await context.Seats.Where(s => booking.ReservedSeatIds.Contains(s.Id)).ToListAsync(cancellationToken);
 
-        var dateTimeUtcNow = DateTime.UtcNow;
+        var dateTimeUtcNow = DateTimeOffset.UtcNow;
 
         var areNoRejectedSeats = seats.All(seat =>
                                       seat.Status == (short)SeatStatus.Reserved &&
-                                      DateTime.FromBinary(seat.ReservationTime!.Value).AddMinutes(10) > dateTimeUtcNow);
+                                      seat.ReservationTime!.Value.AddMinutes(10) > dateTimeUtcNow);
 
         try
         {
@@ -52,8 +52,6 @@ internal class BookingProvider(ICinemaBookingContext context,
 
     public async Task<BookingResponse> CreateBooking(BookingRequest bookingRequest, CancellationToken cancellationToken)
     {
-        //TODO: Validate the booking request
-
         var showtime = await context.Showtimes
             .Include(s => s.Seats)
             .Include(s => s.Movie)
@@ -68,7 +66,7 @@ internal class BookingProvider(ICinemaBookingContext context,
             throw new InvalidOperationException("One or more requested seats are not available.");
         }
 
-        var dateTimeNow = DateTime.UtcNow;
+        var dateTimeNow = DateTimeOffset.UtcNow;
 
         var booking = new Booking
         {
@@ -111,7 +109,7 @@ internal class BookingProvider(ICinemaBookingContext context,
 
         foreach (var seat in contiguousSeats)
         {
-            seat.UpdateStatus(SeatStatus.Reserved, DateTime.UtcNow);
+            seat.UpdateStatus(SeatStatus.Reserved, DateTimeOffset.UtcNow);
         }
 
         await context.Bookings.AddAsync(booking, cancellationToken);
@@ -131,7 +129,7 @@ internal class BookingProvider(ICinemaBookingContext context,
 
         foreach (var seat in seats)
         {
-            seat.UpdateStatus(SeatStatus.Available, DateTime.UtcNow);
+            seat.UpdateStatus(SeatStatus.Available, DateTimeOffset.UtcNow);
         }
 
         context.Bookings.Remove(booking);
@@ -147,13 +145,14 @@ internal class BookingProvider(ICinemaBookingContext context,
             ?? throw new NotFoundException($"Booking with id {bookingRequest.Id} not found.");
 
         var returnSeats = await context.Seats.Where(s => booking.ReservedSeatIds.Contains(s.Id)).ToListAsync(cancellationToken);
+        var dateTimeNow = DateTimeOffset.UtcNow;
 
         foreach (var seat in returnSeats)
         {
-            seat.UpdateStatus(SeatStatus.Available, DateTime.UtcNow);
+            seat.UpdateStatus(SeatStatus.Available, dateTimeNow);
         }
 
-        var dateTimeNow = DateTimeOffset.UtcNow;
+
         var newBooking = new Booking
         {
             ShowTimeId = bookingRequest.ShowTimeId,
@@ -167,7 +166,7 @@ internal class BookingProvider(ICinemaBookingContext context,
 
         foreach (var seat in newSeats)
         {
-            seat.UpdateStatus(SeatStatus.Reserved, DateTime.UtcNow);
+            seat.UpdateStatus(SeatStatus.Reserved, dateTimeNow);
         }
 
         await context.SaveChanges(cancellationToken);

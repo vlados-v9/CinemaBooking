@@ -70,8 +70,7 @@ public static class DatabaseSeeder
             .RuleFor(x => x.StartTime, f =>
                 DateTimeOffset.UtcNow
                     .AddDays(f.Random.Int(0, 7))
-                    .AddHours(f.Random.Int(10, 22))
-                    .ToUnixTimeSeconds())
+                    .AddHours(f.Random.Int(10, 22)))
             .RuleFor(x => x.MovieId, f => f.PickRandom(movieIds))
             .RuleFor(x => x.AuditoriumId, f => f.Random.Long(1, 5));
 

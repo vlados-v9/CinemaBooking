@@ -9,7 +9,7 @@ public class ShowtimeView
     public long Id { get; set; }
 
     [JsonPropertyName("startTime")]
-    public long StartTime { get; set; }
+    public DateTimeOffset StartTime { get; set; }
 
     [JsonPropertyName("movieId")]
     public long MovieId { get; set; }

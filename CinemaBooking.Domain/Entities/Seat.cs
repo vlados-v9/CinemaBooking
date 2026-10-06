@@ -10,7 +10,7 @@ public class Seat
     public int Number { get; set; }
     public long ShowTimeId { get; set; }
     public short Status { get; set; }
-    public long? ReservationTime { get; set; }
+    public DateTimeOffset? ReservationTime { get; set; }
 
     //This feature may not be necessary if we are using SQLite,
     //as the file is locked for editing/updating and cannot be accessed by two users at the same time.
@@ -19,10 +19,10 @@ public class Seat
     [ConcurrencyCheck]
     public Guid Version { get; set; } = Guid.NewGuid();
 
-    public void UpdateStatus(SeatStatus newStatus, DateTime utcNow)
+    public void UpdateStatus(SeatStatus newStatus, DateTimeOffset utcNow)
     {
         Status = (short)newStatus;
-        ReservationTime = utcNow.ToBinary();
+        ReservationTime = utcNow;
         Version = Guid.NewGuid();
     }
 }

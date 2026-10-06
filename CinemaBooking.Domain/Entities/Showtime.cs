@@ -3,7 +3,7 @@
 public class Showtime
 {
     public long Id { get; set; }
-    public long StartTime { get; set; }
+    public DateTimeOffset StartTime { get; set; }
 
     public long MovieId { get; set; }
     public Movie Movie { get; set; } = null!;

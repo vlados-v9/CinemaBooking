@@ -5,7 +5,7 @@ namespace CinemaBooking.Api.Views;
 public class CreateShowtimeView
 {
     [JsonPropertyName("startTime")]
-    public long StartTime { get; set; }
+    public DateTimeOffset StartTime { get; set; }
 
     [JsonPropertyName("movieId")]
     public long MovieId { get; set; }

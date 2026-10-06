@@ -30,7 +30,7 @@ public class BookingController(IBookingManager bookingManager) : ControllerBase
         return Ok(bookingId);
     }
 
-    [HttpPut("delete/{bookingId}")]
+    [HttpDelete("delete/{bookingId}")]
     public async Task<IActionResult> DeleteBooking(Guid bookingId)
     {
         await bookingManager.DeleteBooking(bookingId, CancellationToken.None);
